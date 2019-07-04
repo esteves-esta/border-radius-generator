@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Border Radius Generator</title>
+
+    <link rel="stylesheet" href="estilo.css">
+</head>
+
+<body>
+    <article>
+
+        <section>
+
+            <select id="mudar" onchange="mudar_unidade(mudar.value)">
+                <option disabled selected>Mudar Unidade</option>
+                <option value="%">Porcentagem</option>
+                <option value="px">Pixel</option>
+                <option value="em">Em</option>
+            </select>
+
+            <div>
+                <label>Borda do Topo Esquerda: <span id="topo_esq_v">0</span></label>
+                <input id="topo_esq" type="range" max="150" min="0" step="1" value='0' onchange="mudarBorda(0)"  class="slider">
+            </div>
+
+            <div>
+                <label>Borda do Topo Direita: <span id="topo_dir_v">0</span></label>
+                <input id="topo_dir" type="range" max="150" min="0" step="1" value='0' onchange="mudarBorda(1)"  class="slider">
+            </div>
+
+            <div>
+                <label>Borda Base Direita: <span id="base_dir_v">0</span></label>
+                <input id="base_dir" type="range" max="150" min="0" step="1" value='0' onchange="mudarBorda(2)"  class="slider">
+            </div>
+
+            <div>
+                <label>Borda Base Esquerda: <span id="base_esq_v">0</span></label>
+                <input id="base_esq" type="range" max="150" min="0" step="1" value='0' onchange="mudarBorda(3)" class="slider">
+            </div>
+
+        </section>
+
+    </article>
+
+    <article>
+
+        <div id="efeito">
+
+        </div>
+
+        <div id="campo_copy">
+            <textarea id='codigo'></textarea>
+            <button type="button" onclick="copiar()">Copiar Código</button>
+        </div>
+
+
+        
+    </article>
+</body>
+
+</html>
+
+<script>
+
+
+    var caixa_exemplo = document.querySelector('#efeito');
+    var cod_copiar = document.querySelector('#codigo');
+
+    var lados_id = ['topo_esq', 'topo_dir', 'base_dir', 'base_esq'];
+    var lado_valor = [0, 0, 0, 0];
+    var bordas = '';
+    var unidade = 'px';
+
+    function mudarBorda(lado_mudar) {
+
+        // pega o valor do input e coloca em seu respectivo local para mostrar para o usuário
+        var lado = document.querySelector(`#${lados_id[lado_mudar]}`).value;
+        var mostrar_valor = document.querySelector(`#${lados_id[lado_mudar]}_v`);
+        mostrar_valor.innerHTML = lado;
+
+        // coloca valor no local correto no array
+        lado_valor[lado_mudar] = lado;
+
+        // valor de cada borda
+        bordas = `${lado_valor[0]}${unidade} ${lado_valor[1]}${unidade} ${lado_valor[2]}${unidade} ${lado_valor[3]}${unidade}`
+        caixa_exemplo.style.borderRadius = bordas;
+
+        // insere codigo em caixa de texto
+        cod_copiar.value = `#caixa{ border-radius: ${bordas}; }`;
+    }
+
+    function mudar_unidade(uni) {
+        unidade = uni;
+    }
+
+
+    // code from w3schools
+    // https://www.w3schools.com/howto/howto_js_copy_clipboard.asp
+    function copiar() {
+
+        /* Select the text field */
+        cod_copiar.select();
+
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+    }
+
+</script>
